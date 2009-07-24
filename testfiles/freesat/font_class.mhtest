@@ -1,0 +1,33 @@
+{ :Application ( '/startup' 0 ) 
+  :Items (
+    {:Font 4
+     :CHook 10
+     :OrigContent :ContentRef ( '~/QUBE-T.TTF' :CCPriority 0 )
+    }
+  )
+}
+<InterchangedObject>
+    <application>
+        <rootclass>
+            <external-reference>
+                <group-identifier>2F 73 74 61 72 74 75 70</group-identifier>
+                <object-number>0</object-number>
+            </external-reference>
+        </rootclass>
+        <items>
+                <font>
+                    <rootclass>
+                        <internal-reference>4</internal-reference>
+                    </rootclass>
+                    <content-hook>10</content-hook>
+                    <original-content>
+                        <referenced-content>
+                            <content-reference>7E 2F 51 55 42 45 2D 54 2E 54 54 46</content-reference>
+                            <content-cache-priority>0</content-cache-priority>
+                        </referenced-content>
+                    </original-content>
+                </font>
+            
+        </items>
+    </application>
+</InterchangedObject>
