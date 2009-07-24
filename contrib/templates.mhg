@@ -1,0 +1,285 @@
+// -*- mheg -*-
+
+// Application
+// ===========
+{ :Application <objref>       //Mand
+  :StdID <n> <n>
+  :StdVersion <n>
+  :ObjectInfo ''
+  :OnStartUp (
+    <at least 1 Eaction>
+  )
+  :OnCloseDown (
+    <at least 1 Eaction>
+  )
+  :OrigGCPriority <n>
+  :Items (
+    <at least 1 Ingredient>
+  )
+  :OnSpawnCloseDown (
+    <at least 1 Eaction>
+  )
+  :OnRestart (
+    <at least 1 Eaction>
+  )
+  // The following in any order.
+  :CharacterSet <n>
+  :BackgroundColour <col>
+  :TextCHook <n>
+  :TextColour <col>
+  :Font <font> // <objref>!''
+  :FontAttributes ''
+  :StreamCHook <n>
+  :BitmapCHook <n>
+  :LineArtCHook <n>
+  :ButtonRefColour <col>
+  :HighlightRefColour <col>
+  :SliderRefColour <col>
+}
+
+// Scene
+// =====
+{ :Scene <objref>       //Mand
+  :StdID <n> <n>
+  :StdVersion <n>
+  :ObjectInfo ''
+  :OnStartUp (
+    <at least 1 Eaction>
+  )
+  :OnCloseDown (
+    <at least 1 Eaction>
+  )
+  :OrigGCPriority <n>
+  :Items (
+    <at least 1 Ingredient>
+  )
+  :InputEventReg <n>  //Mand
+  :SceneCS <n> <n>  //Mand
+  :AspectRatio <n> <n>
+  :MovingCursor <bool>
+  :NextScenes (
+    ( '' <n> )
+    ...
+  )
+}
+
+    { :ingred <objref>
+      :InitiallyActive <bool>
+      :CHook <n>
+      :OrigContent <''|:ContentRef ('' :ContentSize <n> :CCPriority <n>)>
+      :Shared <bool>
+    }
+
+    { :variable <objref>
+      :InitiallyActive <bool>
+//      :CHook <n>
+//      :OrigContent <''|:ContentRef ('' :ContentSize <n> :CCPriority <n>)>
+      :Shared <bool>
+      :OrigValue <bool>|<n>|''|:ObjectRef <objref>|:ContentRef ''
+    }
+
+    { :visible <objref>
+      :InitiallyActive <bool>
+      :CHook <n>
+      :OrigContent <''|:ContentRef ('' :ContentSize <n> :CCPriority <n>)>
+      :Shared <bool>
+      :OrigBoxSize <n> <n>        //Mand
+      :OrigPosition <n> <n>
+      :OrigPaletteRef <objref>
+    }
+    { :lineart <objref>
+      :InitiallyActive <bool>
+      :CHook <n>
+      :OrigContent <''|:ContentRef ('' :ContentSize <n> :CCPriority <n>)>
+      :Shared <bool>
+      :OrigBoxSize <n> <n>        //Mand
+      :OrigPosition <n> <n>
+      :OrigPaletteRef <objref>
+      :BBBox <bool>
+      :OrigLineWidth <n>
+      :OrigLineStyle <n>
+      :OrigRefLineColour <col>
+      :OrigRefFillColour <col>
+    }
+
+
+// Link
+// =====
+    { :Link <n>                   //Mand
+      :InitiallyActive <bool>
+      :Shared <bool>
+      :EventSource <objref>       //Mand
+      :EventType <enum>           //Mand
+      :EventData <''|<n>|<bool>>
+      :LinkEffect (               //Mand 
+        <at least 1 Eaction>
+      )
+    }
+
+// ResidentPrg
+// ===========
+    { :ResidentPrg <n>             //Mand
+      :Shared <bool>
+      :Name ''                     //Mand
+      :InitiallyAvailable <bool>       
+    }
+
+// BooleanVar
+// ==========
+    { :BooleanVar <n>              //Mand
+      :InitiallyActive <bool>
+      :Shared <bool>
+      :OrigValue <bool>
+    }
+
+// IntegerVar
+// ==========
+    { :IntegerVar <n>              //Mand
+      :InitiallyActive <bool>
+      :Shared <bool>
+      :OrigValue <n>
+    }
+
+// OStringVar
+// ==========
+    { :OStringVar <n>              //Mand
+      :InitiallyActive <bool>
+      :Shared <bool>
+      :OrigValue ''
+    }
+
+// ObjectRefVar
+// ============
+    { :ObjectRefVar <n>            //Mand
+      :InitiallyActive <bool>
+      :Shared <bool>
+      :OrigValue :ObjectRef <objref>
+    }
+
+// ContentRefVar
+// =============
+    { :ObjectRefVar <n>            //Mand
+      :InitiallyActive <bool>
+      :Shared <bool>
+      :OrigValue :ContentRef ''
+    }
+
+// TokenGroup
+// ==========
+    { :TokenGroup <n>              //Mand
+      :InitiallyActive <bool>
+      :Shared <bool>
+      :MovementTable (
+        ( <n> ... )
+        ...
+      )
+      :TokenGroupItems (           //Mand ?(1.06)
+        ( <objref> //mand
+          :ActionSlots ( 
+            ( Eaction ... ) | null
+            ...
+          )
+        )
+        ...
+      )
+      :NoTokenActionSlots (
+        ( Eaction ... ) | null
+        ...
+      )
+    }
+
+// ListGroup
+// =========
+    { :ListGroup <n>               //Mand
+      :InitiallyActive <bool>
+      :Shared <bool>
+      :MovementTable (
+        ( <n> ... )
+        ...
+      )
+      :TokenGroupItems (           //Mand ?(1.06)
+        ( <objref> //mand
+          :ActionSlots ( 
+            ( Eaction ... ) | null
+            ...
+          )
+        )
+        ...
+      )
+      :NoTokenActionSlots (
+        ( Eaction ... ) | null
+        ...
+      )
+      :Positions (                //Mand
+        ( <n> <n> )
+        ...
+      )
+      :WrapAround <bool>
+      :MultipleSelection <bool>
+    }
+      
+// Bitmap
+// ======
+    { :Bitmap <n>                  //Mand
+      :InitiallyActive <bool>
+      :CHook <n>
+      :OrigContent <''|:ContentRef ('' :ContentSize <n> :CCPriority <n>)>
+      :Shared <bool>
+      :OrigBoxSize <n> <n>         //Mand
+      :OrigPosition <n> <n>
+      :OrigPaletteRef <objref>
+      :Tiling <bool>
+      :OrigTransparency <n>
+    }
+
+// Rectangle
+// =========
+    { :Rectangle <n>               //Mand
+      :InitiallyActive <bool>
+      :Shared <bool>
+      :OrigBoxSize <n> <n>         //Mand
+      :OrigPosition <n> <n>
+      :OrigPaletteRef <objref>
+      :BBBox <bool>
+      :OrigLineWidth <n>
+      :OrigLineStyle <n>
+      :OrigRefLineColour <col>
+      :OrigRefFillColour <col>
+    }
+
+// DynamicLineArt
+// ==============
+    { :DynamicLineArt <n>          //Mand
+      :InitiallyActive <bool>
+      :Shared <bool>
+      :OrigBoxSize <n> <n>         //Mand
+      :OrigPosition <n> <n>
+      :OrigPaletteRef <objref>
+      :BBBox <bool>
+      :OrigLineWidth <n>
+      :OrigLineStyle <n>
+      :OrigRefLineColour <col>
+      :OrigRefFillColour <col>
+    }
+
+// Text
+// ====
+    { :Text <n>                    //Mand
+      :InitiallyActive <bool>
+      :CHook <n>
+      :OrigContent <''|:ContentRef ('' :ContentSize <n> :CCPriority <n>)>
+      :Shared <bool>
+      :OrigBoxSize <n> <n>        //Mand
+      :OrigPosition <n> <n>
+      :OrigPaletteRef <objref>
+      :OrigFont <objref>|''
+      :FontAttributes ''
+      :TextColour <col>
+      :BackgroundColour <col>
+      :CharacterSet <n>
+      :HJustification <enum>
+      :VJustification <enum>
+      :LineOrientation <enum>
+      :StartCorner <enum>
+      :TextWrapping <bool>
+    }

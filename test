@@ -1,0 +1,60 @@
+#!/bin/bash 
+#
+#  Simple test script to help with mhegenc regression tests.
+#  All files in tests/fail with a .mhg extension are encoded and expected to
+#    fail.
+#  All files in tests/pass with a .mhg extension are encoded and expected to
+#    succeed. If they do, the output is decoded and that output is 'diff'ed
+#    (ignoring whitespace and case)
+# any errors are logged to test.log
+# any diffs are stored in tests/pass
+#
+# A few problems:
+#  - can't reliably diff strings in other than qprintable format because the 
+#    decode doesn't know what format to use.
+#  - concated words aren't caught in the diff.
+#
+
+if [ $1x = showx ]
+then
+    outputdev=/dev/stdout
+else
+    outputdev=/dev/null
+fi
+
+: > test.log
+# Run the Fail tests. If any pass, log.
+echo Running Fail Tests
+for script in tests/fail/*.mhg; do
+    if ./mhegenc $script &>$outputdev
+    then echo test file: $script did not fail to encode >> test.log
+    fi
+done
+
+# Run the Pass tests. If any fail, log.
+echo Running Pass Tests
+for script in tests/pass/*.mhg; do
+    if ./mhegenc -o temp_$$.asn $script &>$outputdev ; then
+	if ./mhegenc -d -o temp_$$.mhg temp_$$.asn &>$outputdev ; then
+	    if diff -iBw  temp_$$.mhg $script >$script.diff ; then
+		rm $script.diff
+	    else
+		echo test file: $script failed diff >> test.log
+	    fi
+	    rm temp_$$.mhg
+	else
+	    echo test file: $script encoded failed decode >> test.log
+	fi
+	rm temp_$$.asn
+    else
+	echo test file: $script did not encode >> test.log
+    fi
+done
+
+lines=$(wc -l test.log | cut -d' ' -f8)
+echo "$lines errors"
+if [[ $lines -eq 0 ]];
+then exit 0;
+fi
+cat test.log
+exit 255
