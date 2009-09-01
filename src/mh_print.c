@@ -22,6 +22,8 @@
  *
  *   0.9   Oct 2007 Added SetDesktopColour and OrigDesktopColour for
  *                  freesat extensions.
+ *         Aug 2009 Added GetCounterPosition and GetCounterMaxPosition for
+ *                  DBook 6.1
  *      
  ****************************************************************************
  *
@@ -1749,6 +1751,19 @@ PrintElementaryAction PARAMS ((f, v, indent),
         fprintf(f, ") ");
         break;
 
+    case ELEMENTARYACTION_GET_COUNTER_POSITION:
+        fprintf(f, ":GetCounterPosition ( ");
+        PrintGenericObjectReference (f, v->a.get_counter_position->target, 0);
+        PrintObjectReference(f, v->a.get_counter_position->counter_position_var);
+        fprintf(f, ") ");
+        break;
+
+    case ELEMENTARYACTION_GET_COUNTER_MAX_POSITION:
+        fprintf(f, ":GetCounterMaxPosition ( ");
+        PrintGenericObjectReference (f, v->a.get_counter_max_position->target, 0);
+        PrintObjectReference(f, v->a.get_counter_max_position->counter_max_position_var);
+        fprintf(f, ") ");
+        break;
 
     }
     fprintf(f, "\n");

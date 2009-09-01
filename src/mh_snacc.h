@@ -1776,7 +1776,26 @@ AsnLen BEncGetPositionContent PROTO ((BUF_TYPE b, GetPosition *v));
 void BDecGetPositionContent PROTO ((BUF_TYPE b, AsnTag tagId0, AsnLen elmtLen0, GetPosition *v, AsnLen *bytesDecoded, ENV_TYPE env));
 
 
+typedef struct GetCounterPosition /* SEQUENCE */
+{
+    struct GenericObjectReference* target; /* GenericObjectReference */
+    struct ObjectReference* counter_position_var; /* ObjectReference */
+} GetCounterPosition;
 
+AsnLen BEncGetCounterPositionContent PROTO ((BUF_TYPE b, GetCounterPosition *v));
+
+void BDecGetCounterPositionContent PROTO ((BUF_TYPE b, AsnTag tagId0, AsnLen elmtLen0, GetCounterPosition *v, AsnLen *bytesDecoded, ENV_TYPE env));
+
+
+typedef struct GetCounterMaxPosition /* SEQUENCE */
+{
+    struct GenericObjectReference* target; /* GenericObjectReference */
+    struct ObjectReference* counter_max_position_var; /* ObjectReference */
+} GetCounterMaxPosition;
+
+AsnLen BEncGetCounterMaxPositionContent PROTO ((BUF_TYPE b, GetCounterMaxPosition *v));
+
+void BDecGetCounterMaxPositionContent PROTO ((BUF_TYPE b, AsnTag tagId0, AsnLen elmtLen0, GetCounterMaxPosition *v, AsnLen *bytesDecoded, ENV_TYPE env));
 
 
 typedef struct GetRunningStatus /* SEQUENCE */
@@ -3518,6 +3537,8 @@ typedef struct ElementaryAction /* CHOICE */
         ELEMENTARYACTION_SET_FOCUS_POSITION,
         ELEMENTARYACTION_SET_SLIDER_PARAMETERS,
         ELEMENTARYACTION_SET_DESKTOP_COLOUR,
+        ELEMENTARYACTION_GET_COUNTER_POSITION,
+        ELEMENTARYACTION_GET_COUNTER_MAX_POSITION,
     } choiceId;
     union ElementaryActionChoiceUnion
     {
@@ -3642,6 +3663,8 @@ typedef struct ElementaryAction /* CHOICE */
     struct SetFocusPosition* set_focus_position; /* [245] IMPLICIT SetFocusPosition */
     struct SetSliderParameters* set_slider_parameters; /* [248] IMPLICIT SetSliderParameters */
     struct SetDesktopColour* set_desktop_colour; /* [250] IMPLICIT SetDesktopColour */
+    struct GetCounterPosition *get_counter_position; /* [251] IMPLICIT GetCounterPosition */
+    struct GetCounterMaxPosition *get_counter_max_position; /* [252] IMPLICIT GetCounterMaxPosition */
     } a;
 } ElementaryAction;
 

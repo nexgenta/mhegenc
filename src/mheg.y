@@ -22,6 +22,8 @@
  * 
  *   0.9   Oct 2007 Added SetDesktopColour and OrigDesktopColour for
  *                  freesat extensions.
+ *         Aug 2009 Added GetCounterPosition and GetCounterMaxPosition for
+ *                  DBook 6.1
  *      
  ****************************************************************************
  *
@@ -560,6 +562,8 @@ static void add_object_number(AsnInt,int);
 
 %token eTOK_TAG_SetDesktopColour
 
+%token eTOK_TAG_GetCounterPosition
+%token eTOK_TAG_GetCounterMaxPosition
 %token eTOK_TAG_IndirectReference
 %token eTOK_TAG_GenericBoolean
 %token eTOK_TAG_GenericInteger
@@ -4784,6 +4788,22 @@ ElementaryAction: eTOK_TAG_Activate eTOK_LPAREN GObjRef eTOK_RPAREN
     $$->a.set_desktop_colour = snaccAlloc(sizeof(SetDesktopColour));
     $$->a.set_desktop_colour->target = $3;
     $$->a.set_desktop_colour->new_desktop_colour = $4;
+}
+| eTOK_TAG_GetCounterPosition eTOK_LPAREN GObjRef ObjectReference eTOK_RPAREN
+{
+    $$ = snaccAlloc(sizeof(*$$));
+    $$->choiceId = ELEMENTARYACTION_GET_COUNTER_POSITION;
+    $$->a.get_counter_position = snaccAlloc(sizeof(GetCounterPosition));
+    $$->a.get_counter_position->target = $3;
+    $$->a.get_counter_position->counter_position_var = $4;
+}
+| eTOK_TAG_GetCounterMaxPosition eTOK_LPAREN GObjRef ObjectReference eTOK_RPAREN
+{
+    $$ = snaccAlloc(sizeof(*$$));
+    $$->choiceId = ELEMENTARYACTION_GET_COUNTER_MAX_POSITION;
+    $$->a.get_counter_max_position = snaccAlloc(sizeof(GetCounterMaxPosition));
+    $$->a.get_counter_max_position->target = $3;
+    $$->a.get_counter_max_position->counter_max_position_var = $4;
 }
 ;
         

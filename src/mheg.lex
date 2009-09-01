@@ -22,6 +22,8 @@
  *
  *   0.9   Oct 2007 Added SetDesktopColour and OrigDesktopColour for
  *                  freesat extensions.
+ *         Aug 2009 Added GetCounterPosition and GetCounterMaxPosition for
+ *                  DBook 6.1
  *      
  ****************************************************************************
  *
@@ -368,6 +370,8 @@ colon       \x3a
 :GetFocusPosition/{WD}      {X(); return eTOK_TAG_GetFocusPosition;}
 :SetSliderParameters/{WD}   {X(); return eTOK_TAG_SetSliderParameters;}
 :SetDesktopColour/{WD}      {X(); return eTOK_TAG_SetDesktopColour;}
+:GetCounterPosition/{WD}    {X(); return eTOK_TAG_GetCounterPosition;}
+:GetCounterMaxPosition/{WD} {X(); return eTOK_TAG_GetCounterMaxPosition;}
 
 :IndirectRef/{WD}           {X(); return eTOK_TAG_IndirectReference;}
 :GBoolean/{WD}              {X(); return eTOK_TAG_GenericBoolean;}

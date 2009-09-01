@@ -22,6 +22,8 @@
  *
  *   0.9   Oct 2007 Added SetDesktopColour and OrigDesktopColour for
  *                  freesat extensions.
+ *         Aug 2009 Added GetCounterPosition and GetCounterMaxPosition for
+ *                  DBook 6.1
  *      
  ****************************************************************************
  *
@@ -10011,6 +10013,167 @@ ENV_TYPE env)
 }  /* BDecGetPositionContent */
 
 
+
+AsnLen
+BEncGetCounterPositionContent PARAMS ((b, v),
+BUF_TYPE b _AND_
+GetCounterPosition *v)
+{
+    AsnLen totalLen = 0;
+    AsnLen itemLen;
+    AsnLen listLen;
+    void *component;
+
+    itemLen = BEncObjectReferenceContent (b, (v->counter_position_var));
+
+    totalLen += itemLen;
+
+    itemLen = BEncGenericObjectReferenceContent (b, (v->target));
+
+    totalLen += itemLen;
+
+    return totalLen;
+
+}  /* BEncGetCounterPositionContent */
+
+void
+BDecGetCounterPositionContent PARAMS ((b, tagId0, elmtLen0, v, bytesDecoded, env),
+BUF_TYPE b _AND_
+AsnTag tagId0 _AND_
+AsnLen elmtLen0 _AND_
+GetCounterPosition *v _AND_
+AsnLen *bytesDecoded _AND_
+ENV_TYPE env)
+{
+    int seqDone = FALSE;
+    AsnLen totalElmtsLen1 = 0;
+    AsnLen elmtLen1;
+    AsnTag tagId1;
+    int mandatoryElmtCount1 = 0;
+    AsnLen totalElmtsLen2 = 0;
+    AsnLen elmtLen2;
+    AsnTag tagId2;
+
+
+    tagId1 = BDecTag (b, &totalElmtsLen1, env);
+
+    if (((tagId1 == MAKE_TAG_ID (UNIV, CONS, SEQ_TAG_CODE)) ||
+     (tagId1 ==MAKE_TAG_ID (UNIV, PRIM, INTEGER_TAG_CODE)) ||
+    (tagId1 == MAKE_TAG_ID (CNTX, CONS, 251))))
+    {
+        elmtLen1 = BDecLen (b, &totalElmtsLen1, env);
+    (v->target) = (GenericObjectReference*) Asn1Alloc (sizeof (GenericObjectReference));
+    CheckAsn1Alloc ((v->target), env);
+    BDecGenericObjectReferenceContent (b, tagId1, elmtLen1, (v->target), &totalElmtsLen1, env);
+    tagId1 = BDecTag (b, &totalElmtsLen1, env);
+    }
+    else
+        longjmp (env, -284);
+
+
+    if (((tagId1 == MAKE_TAG_ID (UNIV, CONS, SEQ_TAG_CODE)) ||
+     (tagId1 ==MAKE_TAG_ID (UNIV, PRIM, INTEGER_TAG_CODE))))
+    {
+        elmtLen1 = BDecLen (b, &totalElmtsLen1, env);
+    (v->counter_position_var) = (ObjectReference*) Asn1Alloc (sizeof (ObjectReference));
+    CheckAsn1Alloc ((v->counter_position_var), env);
+    BDecObjectReferenceContent (b, tagId1, elmtLen1, (v->counter_position_var), &totalElmtsLen1, env);
+        seqDone = TRUE;
+        if (elmtLen0 == INDEFINITE_LEN)
+            BDecEoc (b, &totalElmtsLen1, env);
+        else if (totalElmtsLen1 != elmtLen0)
+            longjmp (env, -285);
+    }
+    else
+        longjmp (env, -286);
+
+
+    if (!seqDone)
+        longjmp (env, -287);
+
+    (*bytesDecoded) += totalElmtsLen1;
+}  /* BDecGetCounterPositionContent */
+
+
+AsnLen
+BEncGetCounterMaxPositionContent PARAMS ((b, v),
+BUF_TYPE b _AND_
+GetCounterMaxPosition *v)
+{
+    AsnLen totalLen = 0;
+    AsnLen itemLen;
+    AsnLen listLen;
+    void *component;
+
+    itemLen = BEncObjectReferenceContent (b, (v->counter_max_position_var));
+
+    totalLen += itemLen;
+
+    itemLen = BEncGenericObjectReferenceContent (b, (v->target));
+
+    totalLen += itemLen;
+
+    return totalLen;
+
+}  /* BEncGetCounterPositionContent */
+
+void
+BDecGetCounterMaxPositionContent PARAMS ((b, tagId0, elmtLen0, v, bytesDecoded, env),
+BUF_TYPE b _AND_
+AsnTag tagId0 _AND_
+AsnLen elmtLen0 _AND_
+GetCounterMaxPosition *v _AND_
+AsnLen *bytesDecoded _AND_
+ENV_TYPE env)
+{
+    int seqDone = FALSE;
+    AsnLen totalElmtsLen1 = 0;
+    AsnLen elmtLen1;
+    AsnTag tagId1;
+    int mandatoryElmtCount1 = 0;
+    AsnLen totalElmtsLen2 = 0;
+    AsnLen elmtLen2;
+    AsnTag tagId2;
+
+
+    tagId1 = BDecTag (b, &totalElmtsLen1, env);
+
+    if (((tagId1 == MAKE_TAG_ID (UNIV, CONS, SEQ_TAG_CODE)) ||
+     (tagId1 ==MAKE_TAG_ID (UNIV, PRIM, INTEGER_TAG_CODE)) ||
+    (tagId1 == MAKE_TAG_ID (CNTX, CONS, 252))))
+    {
+        elmtLen1 = BDecLen (b, &totalElmtsLen1, env);
+    (v->target) = (GenericObjectReference*) Asn1Alloc (sizeof (GenericObjectReference));
+    CheckAsn1Alloc ((v->target), env);
+    BDecGenericObjectReferenceContent (b, tagId1, elmtLen1, (v->target), &totalElmtsLen1, env);
+    tagId1 = BDecTag (b, &totalElmtsLen1, env);
+    }
+    else
+        longjmp (env, -284);
+
+
+    if (((tagId1 == MAKE_TAG_ID (UNIV, CONS, SEQ_TAG_CODE)) ||
+     (tagId1 ==MAKE_TAG_ID (UNIV, PRIM, INTEGER_TAG_CODE))))
+    {
+        elmtLen1 = BDecLen (b, &totalElmtsLen1, env);
+    (v->counter_max_position_var) = (ObjectReference*) Asn1Alloc (sizeof (ObjectReference));
+    CheckAsn1Alloc ((v->counter_max_position_var), env);
+    BDecObjectReferenceContent (b, tagId1, elmtLen1, (v->counter_max_position_var), &totalElmtsLen1, env);
+        seqDone = TRUE;
+        if (elmtLen0 == INDEFINITE_LEN)
+            BDecEoc (b, &totalElmtsLen1, env);
+        else if (totalElmtsLen1 != elmtLen0)
+            longjmp (env, -285);
+    }
+    else
+        longjmp (env, -286);
+
+
+    if (!seqDone)
+        longjmp (env, -287);
+
+    (*bytesDecoded) += totalElmtsLen1;
+}  /* BDecGetCounterMaxPositionContent */
 
 
 AsnLen
@@ -20299,6 +20462,25 @@ ElementaryAction *v)
 
     break;
 
+       case ELEMENTARYACTION_GET_COUNTER_POSITION:
+    BEncEocIfNec (b);
+    itemLen = BEncGetCounterPositionContent (b, (v->a.get_counter_position));
+    itemLen += BEncConsLen (b, itemLen);
+    itemLen += BEncTag3 (b, CNTX, CONS, 251);
+
+    totalLen += itemLen;
+
+    break;
+
+       case ELEMENTARYACTION_GET_COUNTER_MAX_POSITION:
+    BEncEocIfNec (b);
+    itemLen = BEncGetCounterMaxPositionContent (b, (v->a.get_counter_max_position));
+    itemLen += BEncConsLen (b, itemLen);
+    itemLen += BEncTag3 (b, CNTX, CONS, 252);
+
+    totalLen += itemLen;
+
+    break;
     }
     return totalLen;
 
@@ -21291,6 +21473,19 @@ ENV_TYPE env)
     BDecSetDesktopColourContent (b, tagId0, elmtLen0, (v->a.set_desktop_colour), &totalElmtsLen1, env);
     break;
 
+       case MAKE_TAG_ID (CNTX, CONS, 251):
+        (v->choiceId) = ELEMENTARYACTION_GET_COUNTER_POSITION;
+    (v->a.get_counter_position) = (GetCounterPosition*) Asn1Alloc (sizeof (GetCounterPosition));
+    CheckAsn1Alloc ((v->a.get_counter_position), env);
+    BDecGetCounterPositionContent (b, tagId0, elmtLen0, (v->a.get_counter_position), &totalElmtsLen1, env);
+    break;
+
+       case MAKE_TAG_ID (CNTX, CONS, 252):
+        (v->choiceId) = ELEMENTARYACTION_GET_COUNTER_MAX_POSITION;
+    (v->a.get_counter_max_position) = (GetCounterMaxPosition*) Asn1Alloc (sizeof (GetCounterMaxPosition));
+    CheckAsn1Alloc ((v->a.get_counter_max_position), env);
+    BDecGetCounterMaxPositionContent (b, tagId0, elmtLen0, (v->a.get_counter_max_position), &totalElmtsLen1, env);
+    break;
 
     default:
         Asn1Error ("ERROR - unexpected tag in EA CHOICE\n");
