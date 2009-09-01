@@ -74,7 +74,8 @@ usage()
            "  -c                  include useful comments in decode\n"
            "  -W                  Display warnings about input file\n"
            "  -O                  Prune defaults and unsupported features\n"
-           "  -t                  Testing (allow items not in UK/FreeSat profile)\n");
+           "  -t                  Testing (allow items not in UK/FreeSat profile)\n"
+           "                      If file is '-' then STDIN is assumed\n");
 }
 
 
@@ -91,6 +92,7 @@ main(int argc, char *argv[])
     int warn_mode = 0;
     int optimise_mode = 0;
     int decode_mode = 0;
+    int use_stdin = 0;
     testing_mode = 0;
 
     FILE *outp;
@@ -136,7 +138,23 @@ main(int argc, char *argv[])
     }
     
     infilename = argv[optind];
-    diag_set_filename(infilename);
+    if( !strncmp("-", infilename, 1) ){
+    		if( decode_mode ){
+    				fprintf(stderr, "STDIN not supported for decode mode\n");
+    				usage();
+    				exit(-1);
+    		}
+    		if( !strlen(outfilename) ){
+    				fprintf(stderr, "You must supply an output file name for STDIN");
+    				usage();
+    				exit(-1);
+    		}
+    		use_stdin = 1;
+    		diag_set_filename("stdin");
+    }
+    else {
+		    diag_set_filename(infilename);
+		}
     
     InitNibbleMem(1024, 1024);
 
@@ -278,20 +296,24 @@ main(int argc, char *argv[])
         buf = ExpBufAllocBufAndData();
         
         /* Open the files. */
-        yyin = fopen(infilename, "rb");
-        if( !yyin ){
-            perror("Can't open input file");
-            return -1;
-        }
-
+        if( !use_stdin ){
+		        yyin = fopen(infilename, "rb");
+		        if( !yyin ){
+		            perror("Can't open input file");
+		            return -1;
+		        }
+				}
+				else {
+						yyin = stdin;
+				}
         /* Do the parse. */
         if( yyparse() )
         {
-            fclose(yyin);
+            if( !use_stdin ) fclose(yyin);
             return -2;
         }
 
-        fclose(yyin);
+        if( !use_stdin ) fclose(yyin);
 
         /* Do the analysis */
 //        analyse(&snacc_object);
