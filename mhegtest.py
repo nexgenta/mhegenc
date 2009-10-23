@@ -22,6 +22,11 @@ interchaged_object_tag = '<InterchangedObject>'
 mhtest_file_splitter = re.compile('.*?' + interchaged_object_tag)
 comment_splitter = re.compile('^//.*?\n', re.MULTILINE)
 
+def decygwinise(path):
+    if path.startswith('/cygdrive/') and path[11] == '/':
+        path = path[10] + ':' + path[11:]
+    return path
+        
 def read_mhtest_file(filename):
 
     "Reads an mhtest file and returns the 2 parts (txt, xml)"
@@ -44,7 +49,8 @@ def convert_txt_to_der(txt_content):
     tmp_der_filename = tempfile.mktemp('.der')
     open(tmp_txt_filename, 'w').write(txt_content)
 
-    proc = Popen('mhegenc -o %s %s' % (tmp_der_filename, tmp_txt_filename), 
+    proc = Popen('mhegenc -o %s %s' % (decygwinise(tmp_der_filename),
+                                       decygwinise(tmp_txt_filename)), 
                  shell=True, stdout=PIPE, stderr=STDOUT, close_fds=True)
 
     retcode = proc.wait()
@@ -64,7 +70,7 @@ def convert_xml_to_der(xml_content):
     tmp_xml_filename = tempfile.mktemp('.xml')
     open(tmp_xml_filename, 'w').write(xml_content)
 
-    proc = Popen('mhegasn -ixer -oder  %s' % tmp_xml_filename, 
+    proc = Popen('mhegasn -ixer -oder  %s' % decygwinise(tmp_xml_filename), 
                  shell=True, stdout=PIPE, stderr=PIPE, close_fds=True)
 
     retcode = proc.wait()
@@ -84,7 +90,8 @@ def convert_der_to_txt(der_content):
     tmp_txt_filename = tempfile.mktemp('.mhtxt')
     open(tmp_der_filename, 'w').write(der_content)
 
-    proc = Popen('mhegenc -d -o %s %s' % (tmp_txt_filename, tmp_der_filename), 
+    proc = Popen('mhegenc -d -o %s %s' % (decygwinise(tmp_txt_filename),
+                                          decygwinise(tmp_der_filename)), 
                  shell=True, stdout=PIPE, stderr=STDOUT, close_fds=True)
 
     retcode = proc.wait()
@@ -104,7 +111,7 @@ def convert_der_to_xml(der_content):
     tmp_der_filename = tempfile.mktemp('.der')
     open(tmp_der_filename, 'w').write(der_content)
 
-    proc = Popen('mhegasn -iber -oxer  %s' % tmp_der_filename, 
+    proc = Popen('mhegasn -iber -oxer  %s' % decygwinise(tmp_der_filename), 
                  shell=True, stdout=PIPE, stderr=PIPE, close_fds=True)
 
     retcode = proc.wait()
