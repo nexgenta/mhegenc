@@ -28,6 +28,7 @@
 #include <time.h>
 #include <string.h>
 #include <getopt.h>
+#include <errno.h>
 
 #include <asn-incl.h>
 #include "mh_snacc.h"
@@ -192,7 +193,8 @@ main(int argc, char *argv[])
         /* Read the input contents to the local buffer. */
         infp = fopen(infilename, "rb");
         if( !infp ){
-            perror("Can't open input file");
+            fprintf(stderr, "Can't open input file '%s' (%s)", infilename,
+                    strerror(errno));
             return -1;
         }
 
@@ -299,7 +301,8 @@ main(int argc, char *argv[])
         if( !use_stdin ){
 		        yyin = fopen(infilename, "rb");
 		        if( !yyin ){
-		            perror("Can't open input file");
+                    fprintf(stderr, "Can't open input file '%s' (%s)",
+                            infilename, strerror(errno));
 		            return -1;
 		        }
 				}
