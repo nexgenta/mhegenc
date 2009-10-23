@@ -4861,7 +4861,7 @@ Parameter: eTOK_TAG_GenericBoolean GBool
     $$->a.new_generic_content_reference = $2;
 }
 ;
-PointList: Point PointList {$$=0;}
+PointList: Point PointList
 {
     /* The prepend will create a node and return pointer to the data.
      */
@@ -5124,7 +5124,7 @@ TransitionEffect: GInt {$$=$1;}
 | /* empty */ {$$=0;}
 ;
 
-ObjectReference : eTOK_LPAREN eTOK_STRING Integer eTOK_RPAREN {$$=0;}
+ObjectReference : eTOK_LPAREN eTOK_STRING Integer eTOK_RPAREN
 {
     $$ = snaccAlloc(sizeof(*$$));
     $$->choiceId = OBJECTREFERENCE_EXTERNAL_REFERENCE;
