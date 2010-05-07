@@ -2569,6 +2569,18 @@ void BDecSetDesktopColourContent PROTO ((BUF_TYPE b, AsnTag tagId0, AsnLen elmtL
 
 
 
+typedef struct SetInputMask /* SEQUENCE */
+{
+    struct GenericObjectReference* target; /* GenericObjectReference */
+    struct GenericOctetString* new_input_mask; /* GenericOctetString */
+} SetInputMask;
+
+AsnLen BEncSetInputMaskContent PROTO ((BUF_TYPE b, SetInputMask *v));
+
+void BDecSetInputMaskContent PROTO ((BUF_TYPE b, AsnTag tagId0, AsnLen elmtLen0, SetInputMask *v, AsnLen *bytesDecoded, ENV_TYPE env));
+
+
+
 
 
 
@@ -3539,6 +3551,7 @@ typedef struct ElementaryAction /* CHOICE */
         ELEMENTARYACTION_SET_DESKTOP_COLOUR,
         ELEMENTARYACTION_GET_COUNTER_POSITION,
         ELEMENTARYACTION_GET_COUNTER_MAX_POSITION,
+        ELEMENTARYACTION_SET_INPUT_MASK,
     } choiceId;
     union ElementaryActionChoiceUnion
     {
@@ -3665,6 +3678,8 @@ typedef struct ElementaryAction /* CHOICE */
     struct SetDesktopColour* set_desktop_colour; /* [250] IMPLICIT SetDesktopColour */
     struct GetCounterPosition *get_counter_position; /* [251] IMPLICIT GetCounterPosition */
     struct GetCounterMaxPosition *get_counter_max_position; /* [252] IMPLICIT GetCounterMaxPosition */
+    struct SetInputMask* set_input_mask; /* [254]  SetInputMask */
+
     } a;
 } ElementaryAction;
 
@@ -4001,6 +4016,7 @@ typedef struct SceneClass /* SET */
     struct AspectRatio* aspect_ratio; /* [53] IMPLICIT AspectRatio OPTIONAL */
     AsnBool* moving_cursor; /* [54] IMPLICIT BOOLEAN DEFAULT FALSE */
     SceneClassSeqOf* next_scenes; /* [55] IMPLICIT SceneClassSeqOf SIZE (1..MAX) OPTIONAL */
+    AsnOcts input_event_mask; /* [253] OctetString Optional */
 } SceneClass;
 
 AsnLen BEncSceneClassContent PROTO ((BUF_TYPE b, SceneClass *v));

@@ -24,6 +24,7 @@
  *                  freesat extensions.
  *         Aug 2009 Added GetCounterPosition and GetCounterMaxPosition for
  *                  DBook 6.1
+ *         May 2010 Added SetInputMask (from andrew.sheppard@samsung.com)
  *      
  ****************************************************************************
  *
@@ -20481,6 +20482,16 @@ ElementaryAction *v)
     totalLen += itemLen;
 
     break;
+
+       case ELEMENTARYACTION_SET_INPUT_MASK:
+    BEncEocIfNec (b);
+    itemLen = BEncSetInputMaskContent (b, (v->a.set_input_mask));
+    itemLen += BEncConsLen (b, itemLen);
+    itemLen += BEncTag3 (b, CNTX, CONS, 254);
+
+    totalLen += itemLen;
+
+    break;
     }
     return totalLen;
 
@@ -21485,6 +21496,12 @@ ENV_TYPE env)
     (v->a.get_counter_max_position) = (GetCounterMaxPosition*) Asn1Alloc (sizeof (GetCounterMaxPosition));
     CheckAsn1Alloc ((v->a.get_counter_max_position), env);
     BDecGetCounterMaxPositionContent (b, tagId0, elmtLen0, (v->a.get_counter_max_position), &totalElmtsLen1, env);
+    break;
+       case MAKE_TAG_ID (CNTX, CONS, 254):
+        (v->choiceId) = ELEMENTARYACTION_SET_INPUT_MASK;
+    (v->a.set_input_mask) = (SetInputMask*) Asn1Alloc (sizeof (SetInputMask));
+    CheckAsn1Alloc ((v->a.set_input_mask), env);
+    BDecSetInputMaskContent (b, tagId0, elmtLen0, (v->a.set_input_mask), &totalElmtsLen1, env);
     break;
 
     default:
@@ -23533,6 +23550,16 @@ SceneClass *v)
     AsnLen listLen;
     void *component;
 
+    if (ASNOCTS_PRESENT ((&v->input_event_mask)))
+	{
+	BEncEocIfNec (b);
+	itemLen = BEncAsnOctsContent (b, (&v->input_event_mask));
+	itemLen += BEncDefLen (b, itemLen);
+	itemLen += BEncTag3 (b, CNTX, PRIM, 253);
+
+	totalLen += itemLen;
+	}
+
     if (NOT_NULL ((v->next_scenes)))
     {
     BEncEocIfNec (b);
@@ -23764,6 +23791,10 @@ for ( ; (totalElmtsLen1 < elmtLen0) || (elmtLen0 == INDEFINITE_LEN);)
     BDecSceneClassSeqOfContent (b, tagId1, elmtLen1, (v->next_scenes), &totalElmtsLen1, env);
     break;
 
+       case MAKE_TAG_ID (CNTX, CONS, 253):
+    BDecAsnOctsContent (b, tagId1, elmtLen1, (&v->input_event_mask), &totalElmtsLen1, env);
+    break;
+
     default:
         Asn1Error ("BDecSceneClassContent: ERROR - Unexpected tag in SET\n");
         longjmp (env, -685);
@@ -23859,6 +23890,85 @@ ENV_TYPE env)
 }  /* BDecInterchangedObjectContent */
 
 
+
+AsnLen
+BEncSetInputMaskContent PARAMS ((b, v),
+BUF_TYPE b _AND_
+SetInputMask *v)
+{
+    AsnLen totalLen = 0;
+    AsnLen itemLen;
+    AsnLen listLen;
+    void *component;
+
+    itemLen = BEncGenericOctetStringContent (b, (v->new_input_mask));
+
+    totalLen += itemLen;
+
+    itemLen = BEncGenericObjectReferenceContent (b, (v->target));
+
+    totalLen += itemLen;
+
+    return totalLen;
+
+}  /* BEncGetCounterPositionContent */
+
+void
+BDecSetInputMaskContent PARAMS ((b, tagId0, elmtLen0, v, bytesDecoded, env),
+BUF_TYPE b _AND_
+AsnTag tagId0 _AND_
+AsnLen elmtLen0 _AND_
+SetInputMask *v _AND_
+AsnLen *bytesDecoded _AND_
+ENV_TYPE env)
+{
+    int seqDone = FALSE;
+    AsnLen totalElmtsLen1 = 0;
+    AsnLen elmtLen1;
+    AsnTag tagId1;
+    int mandatoryElmtCount1 = 0;
+    AsnLen totalElmtsLen2 = 0;
+    AsnLen elmtLen2;
+    AsnTag tagId2;
+
+
+    tagId1 = BDecTag (b, &totalElmtsLen1, env);
+
+    if (((tagId1 == MAKE_TAG_ID (UNIV, CONS, SEQ_TAG_CODE)) ||
+     (tagId1 ==MAKE_TAG_ID (UNIV, PRIM, INTEGER_TAG_CODE)) ||
+    (tagId1 == MAKE_TAG_ID (CNTX, CONS, 236))))
+    {
+        elmtLen1 = BDecLen (b, &totalElmtsLen1, env);
+    (v->target) = (GenericObjectReference*) Asn1Alloc (sizeof (GenericObjectReference));
+    CheckAsn1Alloc ((v->target), env);
+    BDecGenericObjectReferenceContent (b, tagId1, elmtLen1, (v->target), &totalElmtsLen1, env);
+    tagId1 = BDecTag (b, &totalElmtsLen1, env);
+    }
+    else
+        longjmp (env, -692);
+
+
+    if (((tagId1 == MAKE_TAG_ID (UNIV, CONS, SEQ_TAG_CODE)) ||
+     (tagId1 ==MAKE_TAG_ID (UNIV, PRIM, INTEGER_TAG_CODE))))
+    {
+        elmtLen1 = BDecLen (b, &totalElmtsLen1, env);
+    (v->new_input_mask) = (GenericOctetString*) Asn1Alloc (sizeof (GenericOctetString));
+    CheckAsn1Alloc ((v->new_input_mask), env);
+    BDecGenericOctetStringContent (b, tagId1, elmtLen1, (v->new_input_mask), &totalElmtsLen1, env);
+        seqDone = TRUE;
+        if (elmtLen0 == INDEFINITE_LEN)
+            BDecEoc (b, &totalElmtsLen1, env);
+        else if (totalElmtsLen1 != elmtLen0)
+            longjmp (env, -693);
+    }
+    else
+        longjmp (env, -694);
+
+    if (!seqDone)
+        longjmp (env, -695);
+
+    (*bytesDecoded) += totalElmtsLen1;
+}  /* BDecSetInputMaskContent */
 
 /*
  * Local variables:

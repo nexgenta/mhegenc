@@ -24,6 +24,7 @@
  *                  freesat extensions.
  *         Aug 2009 Added GetCounterPosition and GetCounterMaxPosition for
  *                  DBook 6.1
+ *         May 2010 Added SetInputMask (from andrew.sheppard@samsung.com)
  *      
  ****************************************************************************
  *
@@ -1762,6 +1763,13 @@ PrintElementaryAction PARAMS ((f, v, indent),
         fprintf(f, ":GetCounterMaxPosition ( ");
         PrintGenericObjectReference (f, v->a.get_counter_max_position->target, 0);
         PrintObjectReference(f, v->a.get_counter_max_position->counter_max_position_var);
+        fprintf(f, ") ");
+        break;
+
+    case ELEMENTARYACTION_SET_INPUT_MASK:
+        fprintf(f, ":SetInputMask ( ");
+        PrintGenericObjectReference (f, v->a.set_input_mask->target, 0);
+        PrintGenericOctetString(f, v->a.set_input_mask->new_input_mask, 0);
         fprintf(f, ") ");
         break;
 

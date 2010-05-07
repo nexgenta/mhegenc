@@ -7,11 +7,12 @@ LEX = flex
 TAR = tar
 
 VERSION_MAJOR := 0
-VERSION_MINOR := 12
+VERSION_MINOR := 13
 
 UNAME := $(shell uname)
 
 CFLAGS= -I/usr/local/include/snacc/c \
+	-I/usr/include/snacc/c \
 	-I/opt/local/include/snacc/c -I./src -DUSE_EXP_BUF \
         -DVERSION_MAJOR=$(VERSION_MAJOR) -DVERSION_MINOR=$(VERSION_MINOR) -O2
 

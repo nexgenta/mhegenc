@@ -24,7 +24,8 @@
  *                  freesat extensions.
  *         Aug 2009 Added GetCounterPosition and GetCounterMaxPosition for
  *                  DBook 6.1
- *      
+  *         May 2010 Added SetInputMask (from andrew.sheppard@samsung.com)
+*      
  ****************************************************************************
  *
  * This program is free software; you can redistribute it and/or
@@ -372,6 +373,9 @@ colon       \x3a
 :SetDesktopColour/{WD}      {X(); return eTOK_TAG_SetDesktopColour;}
 :GetCounterPosition/{WD}    {X(); return eTOK_TAG_GetCounterPosition;}
 :GetCounterMaxPosition/{WD} {X(); return eTOK_TAG_GetCounterMaxPosition;}
+:SetInputMask/{WD}          {X(); return eTOK_TAG_SetInputMask;}
+:InputEventMask/{WD}        {X(); return eTOK_TAG_InputEventMask;}
+
 
 :IndirectRef/{WD}           {X(); return eTOK_TAG_IndirectReference;}
 :GBoolean/{WD}              {X(); return eTOK_TAG_GenericBoolean;}

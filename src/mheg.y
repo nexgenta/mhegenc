@@ -24,6 +24,7 @@
  *                  freesat extensions.
  *         Aug 2009 Added GetCounterPosition and GetCounterMaxPosition for
  *                  DBook 6.1
+ *         May 2010 Added SetInputMask (from andrew.sheppard@samsung.com)
  *      
  ****************************************************************************
  *
@@ -204,6 +205,7 @@ static void add_object_number(AsnInt,int);
 %type <listp> NextScenes
 %type <listp> NextSceneList
 %type <next_scene> NextScene
+%type <sval> InputEventMask
 
 /* Link */
 %type <link> LinkClass
@@ -550,6 +552,7 @@ static void add_object_number(AsnInt,int);
 %token eTOK_TAG_SetFontAttributes
 %token eTOK_TAG_SetCellPosition
 %token eTOK_TAG_SetInputRegister
+%token eTOK_TAG_InputEventMask
 
 %token eTOK_TAG_SetBitmapDecodeOffset
 %token eTOK_TAG_GetBitmapDecodeOffset
@@ -564,6 +567,8 @@ static void add_object_number(AsnInt,int);
 
 %token eTOK_TAG_GetCounterPosition
 %token eTOK_TAG_GetCounterMaxPosition
+%token eTOK_TAG_SetInputMask
+
 %token eTOK_TAG_IndirectReference
 %token eTOK_TAG_GenericBoolean
 %token eTOK_TAG_GenericInteger
@@ -801,6 +806,7 @@ InterchangedObject: eTOK_LBRACE ApplicationId
               AspectRatio
               MovingCursor
               NextScenes
+              InputEventMask
    eTOK_RBRACE
 {
     snacc_object.choiceId = INTERCHANGEDOBJECT_SCENE;
@@ -842,6 +848,10 @@ InterchangedObject: eTOK_LBRACE ApplicationId
     }
     /* NextScenes */
     snacc_object.a.scene->next_scenes = $17;
+        
+    /* InputEventMask */
+    snacc_object.a.scene->input_event_mask = $18;
+    
     if( diag_count( eSEVERITY_ERROR ) )
     {
         diag_report( "*** Unable to encode Scene");
@@ -1095,6 +1105,16 @@ NextScene: eTOK_LPAREN eTOK_STRING Integer eTOK_RPAREN
     $$->scene_weight = $3;
     if( $3 < 0 || $3 > 255 )
         warn_range("SceneWeight", @3.first_line);
+}
+;
+InputEventMask: eTOK_TAG_InputEventMask eTOK_STRING
+{
+    $$=decode_string($2);
+}
+| /* empty. */
+{
+    $$.octetLen=0;
+    $$.octs = 0;
 }
 ;
 
@@ -4804,6 +4824,14 @@ ElementaryAction: eTOK_TAG_Activate eTOK_LPAREN GObjRef eTOK_RPAREN
     $$->a.get_counter_max_position = snaccAlloc(sizeof(GetCounterMaxPosition));
     $$->a.get_counter_max_position->target = $3;
     $$->a.get_counter_max_position->counter_max_position_var = $4;
+}
+| eTOK_TAG_SetInputMask eTOK_LPAREN GObjRef GOString eTOK_RPAREN
+{
+    $$ = snaccAlloc(sizeof(*$$));
+    $$->choiceId = ELEMENTARYACTION_SET_INPUT_MASK;
+    $$->a.set_input_mask = snaccAlloc(sizeof(SetInputMask));
+    $$->a.set_input_mask->target = $3;
+    $$->a.set_input_mask->new_input_mask = $4;
 }
 ;
         
