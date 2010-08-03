@@ -43,6 +43,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  ****************************************************************************/
+%defines
+
 %{
 #include <string.h>
 #include "asn-incl.h"
@@ -51,7 +53,7 @@
 #include "parser.h"
 #include "diag.h"
 #define YYERROR_VERBOSE
-
+#define YYDEBUG 1
 
 
 /* Globals. */
@@ -914,7 +916,7 @@ OnSpawnCloseDown: eTOK_TAG_OnSpawnCloseDown ActionClass {$$=$2;}
 OnRestart: eTOK_TAG_OnRestart ActionClass {$$=$2;}
 | /* empty */  {$$=0;}
 ;
-DefaultAttributes: DefaultAttributeList {$$=$1}
+DefaultAttributes: DefaultAttributeList {$$=$1;}
 | /* empty */ {$$=0;}
 ;
 DefaultAttributeList: DefaultAttribute DefaultAttributeList
@@ -1036,7 +1038,7 @@ FontBody: eTOK_STRING
 {
     $$ = snaccAlloc(sizeof(*$$));
     $$->choiceId = FONTBODY_INDIRECT_FONT;
-    $$->a.indirect_font = $1
+    $$->a.indirect_font = $1;
 }
 ;
 /* Colour returns a pointer to a snacc struct Colour */
@@ -2854,8 +2856,8 @@ Storage :eTOK_TAG_Storage StorageEnum
 }
 | /* empty. */ {$$=STREAM;}
 ;
-StorageEnum: eTOK_ENUM_memory   {$$=MEMORY}
-| eTOK_ENUM_stream              {$$=STREAM}
+StorageEnum: eTOK_ENUM_memory   {$$=MEMORY;}
+| eTOK_ENUM_stream              {$$=STREAM;}
 ;
 Looping: eTOK_TAG_Looping Integer
 {
