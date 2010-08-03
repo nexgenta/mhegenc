@@ -49,7 +49,7 @@
     
 #include "asn-incl.h"
 #include "mh_snacc.h"
-#include "mheg.tab.h"
+#include "mheg.h"
 #include "lexer.h"
 #include "diag.h"
 
